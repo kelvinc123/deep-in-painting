@@ -1,0 +1,11 @@
+# directories
+dataset
+models
+results
+runs
+
+# venv
+venv
+
+# pycache
+__pycache__
