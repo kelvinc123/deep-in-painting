@@ -24,7 +24,7 @@ def save_images(images, path, **kwargs):
 def get_data(args):
     transforms = torchvision.transforms.Compose([
         torchvision.transforms.Lambda(lambda x: x.convert('RGB')),
-        torchvision.transforms.Resize(int(args.image_size + 1/4 * args.image_size)),  # args.image_size + 1/4 *args.image_size
+        torchvision.transforms.Resize(int(args.image_size + 1/4 * args.image_size)),
         torchvision.transforms.RandomResizedCrop(args.image_size, scale=(0.8, 1.0)),
         torchvision.transforms.ToTensor(),
         torchvision.transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))
