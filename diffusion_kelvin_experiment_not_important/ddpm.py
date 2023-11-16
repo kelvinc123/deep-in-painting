@@ -1,18 +1,19 @@
 import os
 import torch
 import torch.nn as nn
-import matplotlib.pyplot as plt
-from torch import optim
+from matplotlib import pyplot as plt
 from tqdm import tqdm
-import logging
+from torch import optim
 from utils import *
 from modules import UNet
+import logging
 from torch.utils.tensorboard import SummaryWriter
 
 logging.basicConfig(format="%(asctime)s - %(levelname)s: %(message)s", level=logging.INFO, datefmt="%I:%M:%S")
 
+
 class Diffusion:
-    def __init__(self, noise_steps=1000, beta_start=1e-4, beta_end=0.02, img_size=64, device="mps"):
+    def __init__(self, noise_steps=1000, beta_start=1e-4, beta_end=0.02, img_size=256, device="cuda"):
         self.noise_steps = noise_steps
         self.beta_start = beta_start
         self.beta_end = beta_end
@@ -20,24 +21,23 @@ class Diffusion:
         self.device = device
 
         self.beta = self.prepare_noise_schedule().to(device)
-        self.alpha = 1 - self.beta
+        self.alpha = 1. - self.beta
         self.alpha_hat = torch.cumprod(self.alpha, dim=0)
-
 
     def prepare_noise_schedule(self):
         return torch.linspace(self.beta_start, self.beta_end, self.noise_steps)
-    
+
     def noise_images(self, x, t):
-        sqrt_alpha_hat = torch.sqrt(self.alpha_hat[t])[:,None, None, None]
-        sqrt_one_minus_alpha_hat = torch.sqrt(1 - self.alpha_hat[t])[:,None, None, None]
+        sqrt_alpha_hat = torch.sqrt(self.alpha_hat[t])[:, None, None, None]
+        sqrt_one_minus_alpha_hat = torch.sqrt(1 - self.alpha_hat[t])[:, None, None, None]
         eps = torch.randn_like(x)
-        return (sqrt_alpha_hat * x) + (sqrt_one_minus_alpha_hat * eps), eps
-    
+        return sqrt_alpha_hat * x + sqrt_one_minus_alpha_hat * eps, eps
+
     def sample_timesteps(self, n):
-        return torch.randint(low=1, high=self.noise_steps, size=(n, ))
-    
+        return torch.randint(low=1, high=self.noise_steps, size=(n,))
+
     def sample(self, model, n):
-        logging.info(f"Sampling {n} new images")
+        logging.info(f"Sampling {n} new images....")
         model.eval()
         with torch.no_grad():
             x = torch.randn((n, 3, self.img_size, self.img_size)).to(self.device)
@@ -51,18 +51,18 @@ class Diffusion:
                     noise = torch.randn_like(x)
                 else:
                     noise = torch.zeros_like(x)
-                x = ((1 / torch.sqrt(alpha)) * (x - (((1 - alpha) / torch.sqrt(1 - alpha_hat)) * predicted_noise))) + (torch.sqrt(beta) * noise)
-                
+                x = 1 / torch.sqrt(alpha) * (x - ((1 - alpha) / (torch.sqrt(1 - alpha_hat))) * predicted_noise) + torch.sqrt(beta) * noise
         model.train()
         x = (x.clamp(-1, 1) + 1) / 2
         x = (x * 255).type(torch.uint8)
         return x
-    
+
+
 def train(args):
     setup_logging(args.run_name)
     device = args.device
     dataloader = get_data(args)
-    model = UNet(device=device).to(device)
+    model = UNet(c_in=3, c_out=3, time_dim=256, img_size=args.image_size, device="cuda").to(device)
     optimizer = optim.AdamW(model.parameters(), lr=args.lr)
     mse = nn.MSELoss()
     diffusion = Diffusion(img_size=args.image_size, device=device)

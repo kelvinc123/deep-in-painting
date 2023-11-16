@@ -8,11 +8,11 @@ def launch():
     args = parser.parse_args()
     args.run_name = "DDPM_Uncondtional"
     args.epochs = 500
-    args.batch_size = 12
-    args.image_size = 64
+    args.batch_size = 4
+    args.image_size = 96
     args.dataset_path = os.path.join("..", "dataset", "pokemon_dataset")
-    args.device = "mps"
-    args.lr = 3e-4
+    args.device = "cuda"
+    args.lr = 1e-4
     train(args)
 
 
