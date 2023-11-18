@@ -15,8 +15,8 @@ SPECIAL_SD_MODEL_MADE_FOR_INPAINT = "runwayml/stable-diffusion-inpainting"  # Tr
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # PUT THE DATASET OF IMAGE HERE
-DATASET_SAMPLE = os.path.join("sample_images", "sample_dog.jpg")
-PROMPT = "a brown cat, smile, high resolution"
+DATASET_SAMPLE = os.path.join("sample_images", "000000000722.jpg")
+PROMPT = "A land with a lot of people, high resolution"
 
 # IN this project, we use Stable Diffusion Inpainting Pipeline
 # to get more flexibility, don't use pipeline. We might be able to find new techniques
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     predictor = SegmentPredictor(model_name=SEGMENT_MODEL_NAME, device=DEVICE)
 
     # Load stable diffusion model pipeline
-    pipe = StableDiffusionInpaintPipeline.from_pretrained(SD_MODEL_NAME, torch_dtype=torch.float16)
+    pipe = StableDiffusionInpaintPipeline.from_pretrained(SPECIAL_SD_MODEL_MADE_FOR_INPAINT, torch_dtype=torch.float16)
     pipe = pipe.to(DEVICE)
 
     # Open image and transform it to 512 by 512 (input for SD)
