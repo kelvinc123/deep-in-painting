@@ -4,11 +4,11 @@ from PIL import Image
 import requests
 import matplotlib.pyplot as plt
 
-from utils import *
+from .utils import *
 
 # https://github.com/huggingface/notebooks/blob/main/examples/segment_anything.ipynb
 
-class Predictor:
+class SegmentPredictor:
 
     def __init__(self, model_name, device="cuda"):
         self.model = SamModel.from_pretrained(model_name).to(device)

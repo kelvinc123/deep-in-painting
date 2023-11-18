@@ -3,7 +3,7 @@ from PIL import Image
 import requests
 
 from utils import *
-from inference import Predictor
+from inference import SegmentPredictor
 
 # https://github.com/huggingface/notebooks/blob/main/examples/segment_anything.ipynb
 
@@ -11,7 +11,7 @@ MODEL_NAME = "facebook/sam-vit-huge"
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 if __name__ == "__main__":
-    predictor = Predictor(model_name=MODEL_NAME, device=DEVICE)
+    predictor = SegmentPredictor(model_name=MODEL_NAME, device=DEVICE)
 
     img_url = "https://huggingface.co/ybelkada/segment-anything/resolve/main/assets/car.png"
     raw_image = Image.open(requests.get(img_url, stream=True).raw).convert("RGB")
