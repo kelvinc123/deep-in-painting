@@ -7,3 +7,5 @@ tensorboard
 transformers
 diffusers
 accelerate
+ipykernel
+jupyter

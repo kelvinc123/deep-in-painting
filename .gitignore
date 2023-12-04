@@ -9,3 +9,12 @@ venv
 
 # pycache
 __pycache__
+
+# data
+data
+
+# pretrained
+pretrained
+
+# checkpoints
+.ipynb_checkpoints
