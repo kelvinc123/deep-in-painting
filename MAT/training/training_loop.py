@@ -66,6 +66,15 @@ def setup_snapshot_image_grid(training_set, random_seed=0):
 #----------------------------------------------------------------------------
 
 def save_image_grid(img, fname, drange, grid_size):
+    ###########
+    # CHANGED #
+    ###########
+    if img.shape[3] == 1:
+        # Change NHWC TO NCHW
+        img = img.transpose(0, 3, 1, 2)
+    ###########
+    # CHANGED #
+    ###########
     lo, hi = drange
     img = np.asarray(img, dtype=np.float32)
     img = (img - lo) * (255 / (hi - lo))
@@ -73,6 +82,15 @@ def save_image_grid(img, fname, drange, grid_size):
 
     gw, gh = grid_size
     _N, C, H, W = img.shape
+
+    ###########
+    # CHANGED #
+    ###########
+    print(img.shape)
+    ###########
+    # CHANGED #
+    ###########
+
     img = img.reshape(gh, gw, C, H, W)
     img = img.transpose(0, 3, 1, 4, 2)
     img = img.reshape(gh * H, gw * W, C)

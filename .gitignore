@@ -11,7 +11,7 @@ venv
 __pycache__
 
 # data
-data
+data/combined
 
 # pretrained
 pretrained
@@ -21,3 +21,6 @@ pretrained
 
 # vae
 vae
+
+# data
+data
