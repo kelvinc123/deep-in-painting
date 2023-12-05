@@ -84,9 +84,7 @@ class CustomDataset(torch.utils.data.Dataset):
             mask = np.array(Image.open(mask_path))
 
         if mask.ndim == 2:
-            mask = mask[np.newaxis, :, :]  # Add channel dimension
-            print("Mask shape: ", mask.shape)
-            print("Image shape: ", img.shape)
+            mask = mask[:, :, np.newaxis]  # Add channel dimension
         # restricted to 512x512
         res = 512
         H, W, C = img.shape
