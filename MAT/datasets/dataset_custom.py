@@ -66,15 +66,22 @@ class CustomDataset(torch.utils.data.Dataset):
         return self.num_dataset
 
     def __getitem__(self, idx):
-        img_name = str(idx) + ".jpg"
-        label_name = str(idx) + ".txt"
-        img_path = os.path.join(self.images_path, img_name)
-        mask_path = os.path.join(self.masks_path, img_name)
-        label_path = os.path.join(self.labels_path, label_name)
-
-        img = np.array(Image.open(img_path))
-        mask = np.array(Image.open(mask_path))
-
+        try:
+            img_name = str(idx) + ".jpg"
+            label_name = str(idx) + ".txt"
+            img_path = os.path.join(self.images_path, img_name)
+            mask_path = os.path.join(self.masks_path, img_name)
+            label_path = os.path.join(self.labels_path, label_name)
+            img = np.array(Image.open(img_path))
+            mask = np.array(Image.open(mask_path))
+        except:
+            img_name = str(0) + ".jpg"
+            label_name = str(0) + ".txt"
+            img_path = os.path.join(self.images_path, img_name)
+            mask_path = os.path.join(self.masks_path, img_name)
+            label_path = os.path.join(self.labels_path, label_name)
+            img = np.array(Image.open(img_path))
+            mask = np.array(Image.open(mask_path))
         # restricted to 512x512
         res = 512
         H, W, C = img.shape
