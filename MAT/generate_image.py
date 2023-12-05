@@ -95,9 +95,9 @@ def generate_images(
         assert len(img_list) == len(mask_list), 'illegal mapping'
 
     print(f'Loading networks from: {network_pkl}')
-    device = torch.device('cuda')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     with dnnlib.util.open_url(network_pkl) as f:
-        G_saved = legacy.load_network_pkl(f)['G_ema'].to(device).eval().requires_grad_(False) # type: ignore
+        G_saved = legacy.load_network_pkl(f)['G_ema'].to(device).eval().requires_grad_(False)
     net_res = 512 if resolution > 512 else resolution
     G = Generator(z_dim=512, c_dim=0, w_dim=512, img_resolution=net_res, img_channels=3).to(device).eval().requires_grad_(False)
     copy_params_and_buffers(G_saved, G, require_all=True)
@@ -140,6 +140,7 @@ def generate_images(
 
             if mpath is not None:
                 mask = cv2.imread(mask_list[i], cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255.0
+                mask = 1 - mask
                 mask = torch.from_numpy(mask).float().to(device).unsqueeze(0).unsqueeze(0)
             else:
                 mask = RandomMask(resolution) # adjust the masking ratio by using 'hole_range'
