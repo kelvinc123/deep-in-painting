@@ -73,7 +73,7 @@ class CustomDataset(torch.utils.data.Dataset):
             mask_path = os.path.join(self.masks_path, img_name)
             label_path = os.path.join(self.labels_path, label_name)
             img = np.array(Image.open(img_path))
-            mask = np.array(Image.open(mask_path), dtype=np.uint8)
+            mask = np.array(Image.open(mask_path))
         except:
             img_name = str(0) + ".jpg"
             label_name = str(0) + ".txt"
@@ -81,10 +81,12 @@ class CustomDataset(torch.utils.data.Dataset):
             mask_path = os.path.join(self.masks_path, img_name)
             label_path = os.path.join(self.labels_path, label_name)
             img = np.array(Image.open(img_path))
-            mask = np.array(Image.open(mask_path), dtype=np.uint8)
+            mask = np.array(Image.open(mask_path))
 
         if mask.ndim == 2:
-            mask = mask[:, :, np.newaxis]  # Add channel dimension
+            mask = mask[np.newaxis, :, :]  # Add channel dimension
+            print("Mask shape: ", mask.shape)
+            print("Image shape: ", img.shape)
         # restricted to 512x512
         res = 512
         H, W, C = img.shape
