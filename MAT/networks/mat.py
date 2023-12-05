@@ -751,12 +751,7 @@ class FirstStage(nn.Module):
             self.dec_conv.append(DecStyleBlock(res, dim, dim, activation, style_dim, use_noise, demodulate, img_channels))
 
     def forward(self, images_in, masks_in, ws, noise_mode='random'):
-        # Replicate the mask to have the same number of channels as the image
-        masks_in_repeated = masks_in.repeat(1, images_in.size(1), 1, 1)
-
-        # Now concatenate
-        x = torch.cat([masks_in_repeated - 0.5, images_in * masks_in_repeated], dim=1)
-
+        x = torch.cat([masks_in - 0.5, images_in * masks_in], dim=1)
 
         skips = []
         x, mask = self.conv_first(x, masks_in)  # input size
