@@ -66,33 +66,14 @@ class CustomDataset(torch.utils.data.Dataset):
         return self.num_dataset
 
     def __getitem__(self, idx):
-        img_name = str(idx) + ".jpg"
+        img_name = str(idx) + ".npz"
         label_name = str(idx) + ".txt"
         img_path = os.path.join(self.images_path, img_name)
         mask_path = os.path.join(self.masks_path, img_name)
         label_path = os.path.join(self.labels_path, label_name)
 
-        img = np.array(Image.open(img_path).convert("RGB"))
-        mask = np.array(Image.open(mask_path))
-
-        # restricted to 512x512
-        res = 512
-        H, W, C = img.shape
-        # Padding
-        if H < res or W < res:
-            top = 0
-            bottom = max(0, res - H)
-            left = 0
-            right = max(0, res - W)
-            img = cv2.copyMakeBorder(img, top, bottom, left, right, cv2.BORDER_REFLECT)
-        
-        H, W, _ = img.shape
-        h = random.randint(0, H - res)
-        w = random.randint(0, W - res)
-        img = img[h:h+res, w:w+res, :]
-        mask = mask[h:h+res, w:w+res]
-
-        img = np.ascontiguousarray(img.transpose(2, 0, 1)) # HWC => CHW
+        img = np.load(img_path)["arr_0"]
+        mask = np.load(mask_path)["arr_0"]
 
         with open(label_path, "r") as f:
             class_name = f.read().strip()
@@ -102,7 +83,7 @@ class CustomDataset(torch.utils.data.Dataset):
         return img.copy(), mask.copy(), label
     
 if __name__ == "__main__":
-    root_dir = os.path.join("..", "data", "FirstBatch", "combined", "train_dir")
+    root_dir = os.path.join("..", "data", "FirstBatch", "combined", "vae_train_dir")
     dataset = CustomDataset(path=root_dir, resolution=512)
     a, b, c = dataset[0]
     print(a.shape)

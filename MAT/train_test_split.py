@@ -34,7 +34,7 @@ for img in tqdm(os.listdir(images_path)):
         label_path = os.path.join(labels_path, label)
 
         # restricted to 512x512
-        img = np.array(Image.open(img_path))
+        img = np.array(Image.open(img_path).convert("RGB"))
         mask = np.array(Image.open(label_path))
         res = 512
         H, W, C = img.shape
