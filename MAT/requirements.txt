@@ -8,7 +8,7 @@ scipy
 click
 requests
 tqdm
-pyspng
+# pyspng
 ninja
 imageio-ffmpeg==0.4.3
 timm

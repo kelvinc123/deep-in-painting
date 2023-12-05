@@ -106,3 +106,4 @@ if __name__ == "__main__":
     # dataset = CustomDataset(path=root_dir, resolution=512)
     # print(dataset[0])
     # print(dataset[6000])
+    pass
