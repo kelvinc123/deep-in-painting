@@ -62,8 +62,8 @@ def calculate_metrics(folder1, folder2):
 
 
 if __name__ == '__main__':
-    folder1 = 'path to the inpainted result'
-    folder2 = 'path to the gt'
+    folder1 = '../test_sets_samples_2'
+    folder2 = '../test_sets/Places/images'
 
     res = calculate_metrics(folder1, folder2)
     print('lpips: %.4f' % res)
