@@ -183,8 +183,8 @@ def calculate_metrics(folder1, folder2):
 
 
 if __name__ == '__main__':
-    folder1 = 'path to the inpainted result'
-    folder2 = 'path to the gt'
+    folder1 = '../test_sets_samples_2'
+    folder2 = '../test_sets/Places/images'
 
     fid, pids, uids = calculate_metrics(folder1, folder2)
     print('fid: %.4f, pids: %.4f, uids: %.4f' % (fid, pids, uids))

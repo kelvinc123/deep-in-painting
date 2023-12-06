@@ -97,8 +97,8 @@ def calculate_metrics(folder1, folder2):
 
 
 if __name__ == '__main__':
-    folder1 = 'path to the inpainted result'
-    folder2 = 'path to the gt'
+    folder1 = '../test_sets_samples_2'
+    folder2 = '../test_sets/Places/images'
 
     psnr, ssim, dl1 = calculate_metrics(folder1, folder2)
     print('psnr: %.4f, ssim: %.4f, l1: %.4f' % (psnr, ssim, dl1))
