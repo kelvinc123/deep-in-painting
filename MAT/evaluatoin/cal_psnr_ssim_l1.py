@@ -97,7 +97,7 @@ def calculate_metrics(folder1, folder2):
 
 
 if __name__ == '__main__':
-    folder1 = '../test_sets/Places/inpaint_results'
+    folder1 = '../test_sets_samples_4'
     folder2 = '../test_sets/Places/images'
 
     psnr, ssim, dl1 = calculate_metrics(folder1, folder2)
