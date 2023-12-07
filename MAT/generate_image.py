@@ -140,7 +140,7 @@ def generate_images(
 
             if mpath is not None:
                 mask = cv2.imread(mask_list[i], cv2.IMREAD_GRAYSCALE).astype(np.float32) / 255.0
-                # mask = 1 - mask
+                mask = 1 - mask
                 mask = torch.from_numpy(mask).float().to(device).unsqueeze(0).unsqueeze(0)
             else:
                 mask = RandomMask(resolution) # adjust the masking ratio by using 'hole_range'
