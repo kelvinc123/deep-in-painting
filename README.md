@@ -40,7 +40,4 @@ To run MAT training and inference, follow the instruction from `README.md` from 
 The code for running VAE encoder and decoder is available under `transformation.py` script. You need to download the pre-trained VAE from [huggingface](https://huggingface.co/stabilityai/stable-diffusion-2/tree/main). Download the `vae` directory and put it inside `MAT` directory.
 
 ### Note
-The `MAT` directory contains the cloned repository of the implementation of the original *MAT: Mask-Aware Transformer for Large Hole Image Inpainting* paper.
-
-
-Install pytorch yourself, based on my experience, putting pytorch in requirements.txt causes some dependency differences...
+The `MAT` directory contains the cloned repository of the implementation of the original *MAT: Mask-Aware Transformer for Large Hole Image Inpainting* paper. The `train_test_split.py` and `encode_vae.py` are not from the original repository. Those are a helper scripts to do training using our dataset.
