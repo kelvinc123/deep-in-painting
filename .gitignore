@@ -24,3 +24,9 @@ vae
 
 # data
 data
+
+# key_pair.pem
+key_pair.pem
+
+# notebooks
+notebooks
